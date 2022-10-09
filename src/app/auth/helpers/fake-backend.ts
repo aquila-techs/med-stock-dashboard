@@ -17,8 +17,8 @@ import {
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
+import { Role, User } from '@core/models';
 
-import { User, Role } from 'app/auth/models';
 
 // Users with role
 const users: User[] = [

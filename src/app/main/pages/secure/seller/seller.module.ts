@@ -7,12 +7,21 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '@core/guards/auth.guards';
 
-import { AuthenticationModule } from './authentication/authentication.module';
-import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
-
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    component: DashboardComponent
+  }
+]
 @NgModule({
-  declarations: [],
+  declarations: [
+    DashboardComponent
+  ],
   imports: [
     CommonModule,
     CoreCommonModule,
@@ -20,10 +29,8 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
     NgbModule,
     NgSelectModule,
     FormsModule,
-    AuthenticationModule,
-    MiscellaneousModule
+    RouterModule.forChild(routes)
   ],
-
   providers: []
 })
-export class PagesModule {}
+export class SellerModule {}

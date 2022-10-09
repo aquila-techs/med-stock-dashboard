@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import 'hammerjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,32 +18,54 @@ import { coreConfig } from 'app/app-config';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
+import { ErrorComponent } from './main/pages/public/error/error.component';
+import { LoginComponent } from './main/pages/public/login/login.component';
+import { HeaderInterceptor } from '@core/interceptors/header.interceptor';
+import { HttpErrorInterceptor } from '@core/interceptors/http-error.interceptor';
+import { SecureModule } from './main/pages/secure/secure.module';
+import { AdminLoginComponent } from './main/pages/public/admin-login/admin-login.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 
 const appRoutes: Routes = [
   {
-    path: 'pages',
-    loadChildren: () => import('./main/pages/pages.module').then(m => m.PagesModule)
-  },
-  {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
   {
+    path: 'login',
+    component: LoginComponent,
+    data: { animation: 'auth' }
+
+  },
+  {
+    path: 'admin/login',
+    component: AdminLoginComponent,
+    data: { animation: 'auth' }
+
+  },
+  {
     path: '**',
-    redirectTo: '/pages/miscellaneous/error' //Error 404 - Page not found
-  }
+    component: ErrorComponent,
+    data: { animation: 'misc' }
+  },
+  {
+    path: 'pages',
+    loadChildren: () => import('./main/pages/secure/secure.module').then(m => m.SecureModule)
+  },
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {
       scrollPositionRestoration: 'enabled', // Add options right here
-      relativeLinkResolution: 'legacy'
+      relativeLinkResolution: 'legacy',
+      useHash: true
     }),
     TranslateModule.forRoot(),
 
@@ -59,9 +81,20 @@ const appRoutes: Routes = [
 
     // App modules
     LayoutModule,
-    SampleModule
+    SampleModule,
+    SecureModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
-
+  providers:[{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HeaderInterceptor,
+    multi: true
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpErrorInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

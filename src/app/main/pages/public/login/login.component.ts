@@ -5,15 +5,17 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { CoreConfigService } from '@core/services/config.service';
-
+import { AuthenticationService } from '@core/services/authentication.service';
+import { Role } from '@core/models';
+import { sellerMenu } from 'app/menu/menu';
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 @Component({
-  selector: 'app-auth-login-v2',
-  templateUrl: './auth-login-v2.component.html',
-  styleUrls: ['./auth-login-v2.component.scss'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AuthLoginV2Component implements OnInit {
-  //  Public
+export class LoginComponent implements OnInit {
   public coreConfig: any;
   public loginForm: UntypedFormGroup;
   public loading = false;
@@ -21,7 +23,7 @@ export class AuthLoginV2Component implements OnInit {
   public returnUrl: string;
   public error = '';
   public passwordTextType: boolean;
-
+  menu: any = '';
   // Private
   private _unsubscribeAll: Subject<any>;
 
@@ -34,9 +36,12 @@ export class AuthLoginV2Component implements OnInit {
     private _coreConfigService: CoreConfigService,
     private _formBuilder: UntypedFormBuilder,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _authenticationService: AuthenticationService,
+    private _coreMenuService: CoreMenuService
   ) {
     this._unsubscribeAll = new Subject();
+    this.menu = sellerMenu;
 
     // Configure the layout
     this._coreConfigService.config = {
@@ -75,14 +80,25 @@ export class AuthLoginV2Component implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-
     // Login
     this.loading = true;
-
-    // redirect to home page
-    setTimeout(() => {
-      this._router.navigate(['/']);
-    }, 100);
+    this._authenticationService.login(this.loginForm.value).subscribe({
+      next: (res)=> {
+        this.loading = false;
+        if(res?.user && res.user?.userType
+          && res.user.userType.title === Role.Seller ){
+          // Register the menu to the menu service
+          this._coreMenuService.register('main', this.menu);
+          // Set the main menu as our current menu
+          this._coreMenuService.setCurrentMenu('main');
+          this._router.navigate(['/pages/seller/dashboard']);
+        }
+      },
+      error: (err)=>  {
+        this.loading = false;
+        console.log(err);
+      },
+    })
   }
 
   // Lifecycle Hooks
@@ -93,8 +109,8 @@ export class AuthLoginV2Component implements OnInit {
    */
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      email: ['user@medstock.com', [Validators.required, Validators.email]],
+      password: ['MedStock@321', Validators.required]
     });
 
     // get return url from route parameters or default to '/'
