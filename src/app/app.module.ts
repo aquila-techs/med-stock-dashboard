@@ -45,18 +45,21 @@ const appRoutes: Routes = [
   },
   {
     path: 'signup',
+    canActivate: [LoginGuard],
     component: SignupComponent,
     data: { animation: 'auth' }
 
   },
   {
     path: 'forgot-password',
+    canActivate: [LoginGuard],
     component: ForgotPasswordComponent,
     data: { animation: 'auth' }
 
   },
   {
     path: 'seller/login',
+    canActivate: [LoginGuard],
     component: LoginComponent,
     data: { animation: 'auth' }
 
