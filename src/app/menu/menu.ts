@@ -29,7 +29,7 @@ export const adminMenu: CoreMenu[] = [
         title: 'Users Database',
         type: 'item',
         icon: '',
-        url: 'user/database'
+        url: 'users'
       },
       {
         id: 'pendingApproval',

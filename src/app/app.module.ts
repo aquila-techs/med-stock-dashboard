@@ -25,6 +25,9 @@ import { HttpErrorInterceptor } from '@core/interceptors/http-error.interceptor'
 import { SecureModule } from './main/pages/secure/secure.module';
 import { AdminLoginComponent } from './main/pages/public/admin-login/admin-login.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SignupComponent } from './main/pages/public/signup/signup.component';
+import { ForgotPasswordComponent } from './main/pages/public/forgot-password/forgot-password.component';
+import { LoginGuard } from '@core/guards/login.guards';
 
 
 const appRoutes: Routes = [
@@ -35,13 +38,26 @@ const appRoutes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
+    canActivate: [LoginGuard],
+    component: AdminLoginComponent,
     data: { animation: 'auth' }
 
   },
   {
-    path: 'admin/login',
-    component: AdminLoginComponent,
+    path: 'signup',
+    component: SignupComponent,
+    data: { animation: 'auth' }
+
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    data: { animation: 'auth' }
+
+  },
+  {
+    path: 'seller/login',
+    component: LoginComponent,
     data: { animation: 'auth' }
 
   },
@@ -57,7 +73,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent],
+  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent, SignupComponent, ForgotPasswordComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

@@ -10,18 +10,29 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '@core/guards/auth.guards';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { DashboardService } from '@core/services/admin-services/dashboard.service';
+import { UsersListComponent } from './users-list/users-list.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { CardSnippetModule } from '@core/components/card-snippet/card-snippet.module';
 
 const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
     component: DashboardComponent
+  },
+  {
+    path: 'users',
+    canActivate: [AuthGuard],
+    component: UsersListComponent
   }
 ]
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    UsersListComponent
   ],
   imports: [
     CommonModule,
@@ -30,9 +41,12 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     FormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    CardSnippetModule,
+    NgApexchartsModule,
+    NgxDatatableModule,
   ],
 
-  providers: []
+  providers: [DashboardService]
 })
 export class AdminModule {}

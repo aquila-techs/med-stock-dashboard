@@ -13,7 +13,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CoreLoadingScreenService } from '@core/services/loading-screen.service';
 import { CoreTranslationService } from '@core/services/translation.service';
 
-// import { menu } from 'app/menu/menu';
+import { adminMenu } from 'app/menu/menu';
 import { locale as menuEnglish } from 'app/menu/i18n/en';
 import { locale as menuFrench } from 'app/menu/i18n/fr';
 import { locale as menuGerman } from 'app/menu/i18n/de';
@@ -60,13 +60,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private _translateService: TranslateService
   ) {
     // Get the application main menu
-    // this.menu = menu;
+    this.menu = adminMenu;
 
     // Register the menu to the menu service
-    // this._coreMenuService.register('main', this.menu);
+    this._coreMenuService.register('main', this.menu);
 
     // Set the main menu as our current menu
-    // this._coreMenuService.setCurrentMenu('main');
+    this._coreMenuService.setCurrentMenu('main');
 
     // Add languages to the translation service
     this._translateService.addLangs(['en', 'fr', 'de', 'pt']);
