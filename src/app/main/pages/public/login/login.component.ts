@@ -85,8 +85,8 @@ export class LoginComponent implements OnInit {
     this._authenticationService.login(this.loginForm.value).subscribe({
       next: (res)=> {
         this.loading = false;
-        if(res?.user && res.user?.userType
-          && res.user.userType.title === Role.Seller ){
+        if(res?.user && res.user?.role
+          && res.user.role.title === Role.Seller ){
           // Register the menu to the menu service
           this._coreMenuService.register('main', this.menu);
           // Set the main menu as our current menu

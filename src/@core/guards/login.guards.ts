@@ -22,6 +22,8 @@ export class LoginGuard implements CanActivate {
         console.log(jwtdecode);
         if(jwtdecode && jwtdecode?.isAdmin){
           this._router.navigate(['/pages/admin/dashboard'])
+        }if(jwtdecode && !jwtdecode?.isAdmin){
+          this._router.navigate(['/pages/seller/dashboard'])
         }
         return true;
     }

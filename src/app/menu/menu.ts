@@ -15,7 +15,7 @@ export const adminMenu: CoreMenu[] = [
     translate: 'MENU.ORDERS',
     type: 'item',
     icon: 'shopping-bag',
-    url: 'order'
+    url: 'pages/admin/order'
   },
   {
     id: 'users',
@@ -36,7 +36,7 @@ export const adminMenu: CoreMenu[] = [
         title: 'Pending Approval',
         type: 'item',
         icon: '',
-        url: 'user/pendingApproval'
+        url: 'pages/admin/pendingApproval'
       }
     ]
   },
@@ -45,21 +45,21 @@ export const adminMenu: CoreMenu[] = [
     title: 'Promotions',
     type: 'item',
     icon: 'zap',
-    url: 'promotions'
+    url: 'pages/admin/promotions'
   },
   {
     id: 'products',
     title: 'Products',
     type: 'item',
     icon: 'briefcase',
-    url: 'products'
+    url: 'pages/admin/products'
   },
   {
     id: 'feedbackSupport',
     title: 'feedback & Support',
     type: 'item',
     icon: 'twitch',
-    url: 'feedback-support'
+    url: 'pages/admin/feedbackSupport'
   },
 ];
 
@@ -70,7 +70,7 @@ export const sellerMenu: CoreMenu[] = [
     translate: 'MENU.HOME',
     type: 'item',
     icon: 'home',
-    url: 'home'
+    url: 'pages/seller/dashboard'
   },
   {
     id: 'order',
@@ -78,21 +78,21 @@ export const sellerMenu: CoreMenu[] = [
     translate: 'MENU.ORDERS',
     type: 'item',
     icon: 'shopping-bag',
-    url: 'order'
+    url: 'pages/seller/order'
   },
   {
     id: 'products',
     title: 'Products',
     type: 'item',
     icon: 'briefcase',
-    url: 'products'
+    url: 'pages/seller/products'
   },
   {
     id: 'feedbackSupport',
     title: 'feedback & Support',
     type: 'item',
     icon: 'twitch',
-    url: 'feedback-support'
+    url: 'pages/seller/feedbackSupport'
   },
 ]
 
