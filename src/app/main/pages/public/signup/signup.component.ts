@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 
 import { CoreConfigService } from '@core/services/config.service';
 import { AdminService } from '@core/services/admin-services/admin.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -31,7 +33,9 @@ export class SignupComponent implements OnInit {
    */
   constructor(private _coreConfigService: CoreConfigService, 
     private _formBuilder: UntypedFormBuilder,
-    private _adminService: AdminService) {
+    private _adminService: AdminService,
+    private _toastrService: ToastrService,
+    private _rotuer: Router) {
     this._unsubscribeAll = new Subject();
 
     // Configure the layout
@@ -78,6 +82,8 @@ export class SignupComponent implements OnInit {
     this._adminService.createSeller(this.registerForm.value).subscribe({
       next: (res)=>{
         console.log(res)
+        this._toastrService.success('','Seller register please wait for admin approval');
+        this._rotuer.navigate(['/login'])
       },
       error: (err)=> {
         
@@ -94,6 +100,7 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this._formBuilder.group({
       firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });

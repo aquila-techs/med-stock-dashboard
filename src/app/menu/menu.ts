@@ -7,7 +7,7 @@ export const adminMenu: CoreMenu[] = [
     translate: 'MENU.HOME',
     type: 'item',
     icon: 'home',
-    url: 'home'
+    url: 'pages/admin/dashboard'
   },
   {
     id: 'order',
@@ -29,7 +29,7 @@ export const adminMenu: CoreMenu[] = [
         title: 'Users Database',
         type: 'item',
         icon: '',
-        url: 'users'
+        url: 'pages/admin/users'
       },
       {
         id: 'pendingApproval',

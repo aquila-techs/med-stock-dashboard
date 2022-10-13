@@ -43,6 +43,22 @@
               </div>
             </div>
             <div class="form-group">
+              <label for="register-lastName" class="form-label">Last Name</label>
+              <input
+                type="text"
+                formControlName="lastName"
+                class="form-control"
+                placeholder="johndoe"
+                aria-describedby="register-lastName"
+                tabindex="1"
+                autofocus
+                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+              />
+              <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+              </div>
+            </div>
+            <div class="form-group">
               <label for="register-email" class="form-label">Email</label>
               <input
                 type="text"
