@@ -15,7 +15,7 @@ export const adminMenu: CoreMenu[] = [
     translate: 'MENU.ORDERS',
     type: 'item',
     icon: 'shopping-bag',
-    url: 'pages/admin/order'
+    url: 'pages/admin/orders'
   },
   {
     id: 'users',
@@ -26,18 +26,25 @@ export const adminMenu: CoreMenu[] = [
     children:[
       {
         id: 'usersDatabase',
-        title: 'Users Database',
+        title: 'Seller Database',
         type: 'item',
         icon: '',
-        url: 'pages/admin/users'
+        url: 'pages/admin/sellers'
       },
       {
         id: 'pendingApproval',
-        title: 'Pending Approval',
+        title: 'Seller Pending Approval',
         type: 'item',
         icon: '',
-        url: 'pages/admin/pendingApproval'
-      }
+        url: 'pages/admin/pending-approval'
+      },
+      {
+        id: 'usersDatabase',
+        title: 'Buyer Database',
+        type: 'item',
+        icon: '',
+        url: 'pages/admin/buyers'
+      },
     ]
   },
   {

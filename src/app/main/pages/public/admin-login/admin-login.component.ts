@@ -106,7 +106,7 @@ export class AdminLoginComponent implements OnInit {
    */
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
-      email: ['admin@medstock.com', [Validators.required, Validators.email]],
+      email: ['developer.medstock@gmail.com', [Validators.required, Validators.email]],
       password: ['MedStock@321', Validators.required]
     });
 

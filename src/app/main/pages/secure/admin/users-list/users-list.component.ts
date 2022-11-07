@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { AdminService } from '@core/services/admin-services/admin.service';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 
@@ -16,7 +17,7 @@ export class UsersListComponent implements OnInit {
   public total=0;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
-  constructor(private adminService: AdminService) { }
+  constructor(private adminService: AdminService, private _router: Router) { }
 
   ngOnInit(): void {
     this.loadSellerWithPaginatation();
@@ -29,7 +30,7 @@ export class UsersListComponent implements OnInit {
   loadPage(event){
     this.pageNo = event;
     let queryParams = '?pageSize='+this.pageSize+'&pageNo='+event;
-    this.adminService.getAllSeller(queryParams).subscribe({
+    this.adminService.getAllBuyer(queryParams).subscribe({
       next: (res)=>{
         this.rows = res.data;
         this.total = res.totalCount;
@@ -42,7 +43,7 @@ export class UsersListComponent implements OnInit {
 
   loadSellerWithPaginatation(){
     let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo;
-    this.adminService.getAllSeller(queryParams).subscribe({
+    this.adminService.getAllBuyer(queryParams).subscribe({
       next: (res)=>{
         this.rows = res.data;
         this.total = res.totalCount;
@@ -54,7 +55,7 @@ export class UsersListComponent implements OnInit {
   }
 
   sellerApproved(id){
-    this.adminService.sellerApproved({_id: id}).subscribe({
+    this.adminService.buyerApproved({_id: id}).subscribe({
       next: (res)=>{
         this.loadSellerWithPaginatation();
       },
@@ -64,7 +65,7 @@ export class UsersListComponent implements OnInit {
   }
 
   sellerDisapproved(id){
-    this.adminService.sellerDisapproved({_id: id}).subscribe({
+    this.adminService.buyerDisapproved({_id: id}).subscribe({
       next: (res)=>{
         this.loadSellerWithPaginatation();
       },
@@ -72,6 +73,11 @@ export class UsersListComponent implements OnInit {
 
       }
     })
+  }
+
+  showUserDetailPage(sellerObj){
+    this.adminService.setSelectedUser(sellerObj);
+    this._router.navigate(['/pages/admin/user-details/'+ sellerObj._id])
   }
 
 }

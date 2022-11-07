@@ -102,7 +102,11 @@ export class SignupComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      pharmacyName: ['', Validators.required],
+      businessId: ['', Validators.required],
+      address: ['', Validators.required],
+      phone: ['', Validators.required]
     });
     
     // Subscribe to config changes
