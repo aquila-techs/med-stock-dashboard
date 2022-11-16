@@ -25,7 +25,6 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
     'name': '',
     'categoryId': '',
     'price': '',
-    'expiryDate': '',
     'imageUrl': '',
     'sku': '',
     'description': ''
@@ -93,9 +92,6 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
       formData.append('price',this.product.price); 
       formData.append('description',this.product.description);
       formData.append('sku',this.product.sku);
-      if(this.product.expiryDate){
-        formData.append('expiryDate', moment((this.product.expiryDate.month - 1)+'/'+this.product.expiryDate.day+'/'+this.product.expiryDate.year).format('MM/DD/YYYY'));
-      }
       formData.append('categoryId',this.product.categoryId);
       this.productService.addNewProdcut(formData).subscribe({
         next: (res)=>{

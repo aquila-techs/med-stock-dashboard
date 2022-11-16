@@ -25,7 +25,7 @@ export class ProductListComponent implements OnInit {
 
   public searchValue = '';
   public rows: any;
-  public pageSize=10;
+  public pageSize=30;
   public pageNo=1;
   public total=0;
   // Decorator
@@ -88,13 +88,20 @@ export class ProductListComponent implements OnInit {
               elem['imageUrl'] = '';
             }
           })
-          this.total = res[0].count[0].totalCount;
+          if(res[0].count && res[0].count.length > 0){
+            this.total = res[0].count[0].totalCount;
+          }else{
+            this.total = 0;
+          }
       }
     })
   }
   loadPage(event){
     this.pageNo = event;
     let queryParams = '?pageSize='+this.pageSize+'&pageNo='+event;
+    if(this.searchValue.length > 3){
+      queryParams = queryParams + '&q='+this.searchValue; 
+    }
     this.productService.getAllProucts(queryParams).subscribe({
       next: (res)=>{
         this.products = res[0].results;
@@ -103,7 +110,11 @@ export class ProductListComponent implements OnInit {
             elem['imageUrl'] = '';
           }
         })
-        this.total = res[0].count[0].totalCount;
+        if(res[0].count && res[0].count.length > 0){
+          this.total = res[0].count[0].totalCount;
+        }else{
+          this.total = 0;
+        }
       },
       error: (err)=>{
 
@@ -127,5 +138,53 @@ export class ProductListComponent implements OnInit {
   public productEdit(product){
     this.productService.setSelectedproduct(product);
     this.router.navigate(['/pages/admin/edit-product-detail/' + product._id])
+  }
+
+  public searchProductName(){
+    if(this.searchValue.length > 3){
+      this.pageNo=1;
+      let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo+ '&q='+this.searchValue;
+      this.productService.getAllProucts(queryParams).subscribe({
+        next: (res)=>{
+            this.products = res[0].results;
+            this.products.map(elem => {
+              if(!elem.imageUrl){
+                elem['imageUrl'] = '';
+              }
+            })
+            if(res[0].count && res[0].count.length > 0){
+              this.total = res[0].count[0].totalCount;
+            }else{
+              this.total = 0;
+            }
+        }
+      })
+    }else if(this.searchValue.length === 0){
+      this.pageNo=1;
+      let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo;
+      this.productService.getAllProucts(queryParams).subscribe({
+        next: (res)=>{
+            this.products = res[0].results;
+            this.products.map(elem => {
+              if(!elem.imageUrl){
+                elem['imageUrl'] = '';
+              }
+            })
+            if(res[0].count && res[0].count.length > 0){
+              this.total = res[0].count[0].totalCount;
+            }else{
+              this.total = 0;
+            }
+        }
+      })
+    }
+    
+  }
+
+  public shortName(name){
+    if(name.split(' ').length > 2){
+      return name.split(' ')[0]+ " " + name.split(' ')[1];
+    }
+    return name;
   }
 }

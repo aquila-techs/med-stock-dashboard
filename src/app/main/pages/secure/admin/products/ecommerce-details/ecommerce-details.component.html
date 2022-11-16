@@ -17,13 +17,14 @@
             </div>
             <div class="col-12 col-md-5 d-flex align-items-center justify-content-center mb-2 mb-md-0">
               <div class="d-flex align-items-center justify-content-center">
-                <img [src]="product.imageUrl" class="img-fluid product-img" alt="product image" />
+                <img *ngIf="product.imageUrl" [src]="product.imageUrl" class="img-fluid product-img" />
+                <img *ngIf="!product.imageUrl" src="assets\images\portrait\small\placeholderproduct.png" class="img-fluid product-img" />
               </div>
             </div>
             <div class="col-12 col-md-7">
               <h4>{{ product.name }}</h4>
               <span class="card-text item-company"
-                >Category:  <a href="javascript:void(0)" class="company-name">{{ product.category[0].title }}</a></span
+                >Category:  <a *ngIf="product.category && product.category.length > 0" href="javascript:void(0)" class="company-name">{{ product.category[0].title }}</a></span
               >
               <div class="ecommerce-details-price d-flex flex-wrap mt-1">
                 <h4 class="item-price mr-1">${{ product.price }}</h4>

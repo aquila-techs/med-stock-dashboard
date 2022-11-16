@@ -88,9 +88,6 @@ export class EditProductComponent implements OnInit, OnDestroy {
       formData.append('price',this.product.price);
       formData.append('description',this.product.description);
       formData.append('sku',this.product.sku);
-      if(this.product.expiryDate){
-        formData.append('expiryDate', moment((this.product.expiryDate.month - 1)+'/'+this.product.expiryDate.day+'/'+this.product.expiryDate.year).format('MM/DD/YYYY'));
-      }
       formData.append('categoryId',this.product.categoryId);
       this.productService.updateProduct(this.product._id, formData).subscribe({
         next: (res)=>{
@@ -113,11 +110,6 @@ export class EditProductComponent implements OnInit, OnDestroy {
       this.avatarImage = this.product.imageUrl;
       if(this.product.expiryDate){
         let expiryDate = this.product.expiryDate;
-        this.product.expiryDate = {
-          "year": parseInt(moment(expiryDate).format('YYYY')),
-          "month": parseInt(moment(expiryDate).format('MM')),
-          "day": parseInt(moment(expiryDate).format('DD'))
-        }
       }
     });
 

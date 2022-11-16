@@ -55,17 +55,27 @@
         <div class="card">
           <div class="row">
             <div class="col-md-6 col-12">
-              <div class="d-flex justify-content-between align-items-center m-1">
+              <div class="d-flex justify-content-between align-items-center mt-1 ml-1">
                 <!-- <label class="d-flex align-items-center"
-                  >Show
-                  <select class="form-control mx-25" [(ngModel)]="selectedOption">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-                  entries</label
-                > -->
+                >Show
+                <select class="form-control mx-25" [(ngModel)]="pageSize" (change)="searchProductName()">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                entries</label
+              > -->
+
+                <div class="">
+                  <ngb-pagination  [(page)]="pageNo"  
+                  [pageSize]="pageSize"
+                  [maxSize]="5" [rotate]="true"
+                   [boundaryLinks]="true"
+                  (pageChange)="loadPage($event)"  [collectionSize]="total" > 
+                  </ngb-pagination>
+                </div>
+                
               </div>
             </div>
             <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end mt-1">
@@ -73,8 +83,9 @@
                 <label class="d-flex align-items-center ml-1 ml-md-0"
                   >Search:<input
                     [(ngModel)]="searchValue"
+                    (keyup)="searchProductName()"
                     name="searchValue"
-                    type="search"
+                    type="text"
                     class="form-control ml-25"
                 /></label>
                 <!-- <button class="btn btn-primary ml-1" rippleEffect (click)="toggleSidebar('new-user-sidebar')">
@@ -96,7 +107,7 @@
             [headerHeight]="50"
             [scrollbarH]="true"
           >
-            <ngx-datatable-column name="Name" prop="name" [width]="200">
+            <ngx-datatable-column name="Name" prop="name" [width]="300">
               <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
                 <div class="d-flex align-items-center">
                   <div *ngIf="row.imageUrl !== ''; else customAvatar">
@@ -117,7 +128,7 @@
                         'bg-light-warning': row.status == 'pending'
                       }"
                     >
-                      <div class="avatar-content">{{ name | initials }}</div>
+                      <div class="avatar-content">{{ shortName(name) | initials }}</div>
                     </div>
                   </ng-template>
                   <div class="cell-line-height">
@@ -131,9 +142,6 @@
             <ngx-datatable-column name="Price" prop="price" [width]="100"></ngx-datatable-column>
             <ngx-datatable-column name="SKU" prop="sku" [width]="100"></ngx-datatable-column>
 
-            <ngx-datatable-column name="Expiry Date" prop="expiryDate" [width]="100">
-              <ng-template ngx-datatable-cell-template let-row="row">{{row.expiryDate | date}}</ng-template>
-            </ngx-datatable-column>
             <!-- <ngx-datatable-column name="Status" prop="status" [width]="50">
               <ng-template let-status="value" ngx-datatable-cell-template>
                 <div
@@ -151,7 +159,9 @@
 
             <ngx-datatable-column name="Category" prop="category" [width]="50">
               <ng-template let-row="row" ngx-datatable-cell-template>
-               {{row.category[0].title}}
+                <div *ngIf="row.category && row.category.length > 0">
+                  {{row.category[0].title}}
+                </div> 
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Actions" [width]="40" [sortable]="false">
@@ -174,18 +184,7 @@
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>
-          <div class="d-flex justify-content-end mr-1">
-            <ngb-pagination  [(page)]="pageNo"  aria-label="Custom pagination"
-            (pageChange)="loadPage($event)"  [collectionSize]="total">
-              <ng-template ngbPaginationPrevious
-                ><span [data-feather]="'chevron-left'" [class]="'font-weight-bolder'"></span>Prev
-              </ng-template>
-              <ng-template ngbPaginationNext
-                >Next<span [data-feather]="'chevron-right'" [class]="'font-weight-bolder'"></span>
-              </ng-template>
-            </ngb-pagination>
-    
-          </div>
+         
         </div>
       </section>
       <!--/ User List -->
