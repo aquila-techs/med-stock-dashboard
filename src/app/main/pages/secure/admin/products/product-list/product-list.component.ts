@@ -132,7 +132,7 @@ export class ProductListComponent implements OnInit {
 
   public productDetail(product){
     this.productService.setSelectedproduct(product);
-    this.router.navigate(['/pages/admin/details/' + product._id])
+    this.router.navigate(['/pages/admin/product-details/' + product._id])
   }
 
   public productEdit(product){

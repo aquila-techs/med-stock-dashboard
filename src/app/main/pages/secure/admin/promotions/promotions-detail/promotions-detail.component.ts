@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { PromotionService } from '@core/services/admin-services/promotion.service';
 
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
@@ -14,22 +16,7 @@ export class PromotionsDetailComponent implements OnInit {
   // public
   public contentHeader: object;
   public product :any;
-  public products = [
-    {
-      id: 1,
-      name: 'VicTsing Wireless Mouse,',
-      slug: 'vic-tsing-wireless-mouse-1',
-      description:
-        'After thousands of samples of palm data, we designed this ergonomic mouse. The laptop mouse has a streamlined arc and thumb rest to help reduce the stress caused by prolonged use of the laptop mouse.',
-      brand: 'VicTsing',
-      price: 10.99,
-      image: 'assets/images/promotion/promotion-banner.jpg',
-      hasFreeShipping: true,
-      rating: 3
-    }];
-  public wishlist;
-  public cartList;
-  public relatedProducts;
+  public promotion:any = [];
 
   // Swiper
   public swiperResponsive: SwiperConfigInterface = {
@@ -64,7 +51,7 @@ export class PromotionsDetailComponent implements OnInit {
    *
    * @param {EcommerceService} _ecommerceService
    */
-  constructor() {}
+  constructor(private promotionService: PromotionService, private route: ActivatedRoute) {}
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
@@ -104,53 +91,44 @@ export class PromotionsDetailComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    // Subscribe to Selected Product change
-    // this._ecommerceService.onSelectedProductChange.subscribe(res => {
-      this.product = this.products[0];
-    // });
+    this.route.params.subscribe((params: Params) => {
+      const promotionId = params['id'];
 
-    // Subscribe to Wishlist change
-    // this._ecommerceService.onWishlistChange.subscribe(res => (this.wishlist = res));
+      this.promotionService.getPromotion(promotionId).subscribe({
+        next: (res)=>{
+          this.promotion = res;
+        }
+      })
+    })
 
-    // Subscribe to Cartlist change
-    // this._ecommerceService.onCartListChange.subscribe(res => (this.cartList = res));
-
-    // Get Related Products
-    // this._ecommerceService.getRelatedProducts().then(response => {
-    //   this.relatedProducts = response;
-    // });
-
-    // this.product.isInWishlist = this.wishlist.findIndex(p => p.productId === this.product.id) > -1;
-    // this.product.isInCart = this.cartList.findIndex(p => p.productId === this.product.id) > -1;
-
-    // content header
-    this.contentHeader = {
-      headerTitle: 'Product Details',
-      actionButton: true,
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: 'Home',
-            isLink: true,
-            link: '/'
-          },
-          {
-            name: 'eCommerce',
-            isLink: true,
-            link: '/'
-          },
-          {
-            name: 'Shop',
-            isLink: true,
-            link: '/'
-          },
-          {
-            name: 'Details',
-            isLink: false
-          }
-        ]
-      }
-    };
+    // // content header
+    // this.contentHeader = {
+    //   headerTitle: 'Product Details',
+    //   actionButton: true,
+    //   breadcrumb: {
+    //     type: '',
+    //     links: [
+    //       {
+    //         name: 'Home',
+    //         isLink: true,
+    //         link: '/'
+    //       },
+    //       {
+    //         name: 'eCommerce',
+    //         isLink: true,
+    //         link: '/'
+    //       },
+    //       {
+    //         name: 'Shop',
+    //         isLink: true,
+    //         link: '/'
+    //       },
+    //       {
+    //         name: 'Details',
+    //         isLink: false
+    //       }
+    //     ]
+    //   }
+    // };
   }
 }

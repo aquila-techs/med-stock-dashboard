@@ -24,6 +24,10 @@ export class AdminService {
     return this._http.post('user/seller-sign-up',data)
   }
 
+  getProfile(id){
+    return this._http.get('user/me?id='+id)
+  }
+
   getAllSeller(queryParams){
     return this._http.post('admin/get-all-seller'+queryParams,{})
   }

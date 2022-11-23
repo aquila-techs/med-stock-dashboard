@@ -77,7 +77,7 @@ export class SellerListComponent implements OnInit {
 
   showUserDetailPage(sellerObj){
     this.adminService.setSelectedUser(sellerObj);
-    this._router.navigate(['/pages/admin/user-details/'+ sellerObj._id])
+    this._router.navigate(['/pages/admin/seller-details/'+ sellerObj._id])
   }
 
 }

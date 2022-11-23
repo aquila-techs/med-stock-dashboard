@@ -36,4 +36,8 @@ export class ProductService {
   updateProduct(id, data){
     return this._http.put('product/'+id,data)
   }
+
+  getAllSellerProducts(queryParam){
+    return this._http.get('sellerProduct/get-seller-products'+queryParam)
+  }
 }

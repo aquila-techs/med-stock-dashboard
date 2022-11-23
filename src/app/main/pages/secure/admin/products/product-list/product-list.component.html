@@ -159,8 +159,8 @@
 
             <ngx-datatable-column name="Category" prop="category" [width]="50">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                <div *ngIf="row.category && row.category.length > 0">
-                  {{row.category[0].title}}
+                <div *ngIf="row.category ">
+                  {{row.category.title}}
                 </div> 
               </ng-template>
             </ngx-datatable-column>

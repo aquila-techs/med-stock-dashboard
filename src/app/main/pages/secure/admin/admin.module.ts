@@ -38,6 +38,13 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { EditProductComponent } from './products/product-list/edit-product/edit-product.component';
 import { AddNewProductComponent } from './products/product-list/add-new-product/add-new-product.component';
 import { SellerListComponent } from './seller-list/seller-list.component';
+import { SellerDetailsComponent } from './seller-details/seller-details.component';
+import { SellerProductDetailsComponent } from './seller-details/seller-product-details/seller-product-details.component';
+import { OrderDetailsComponent } from './order-details/order-details.component';
+import { BuyerOrderDetailsComponent } from './buyer-order-details/buyer-order-details.component';
+import { EditPromotionComponent } from './promotions/edit-promotion/edit-promotion.component';
+import { AddNewPromotionComponent } from './promotions/add-new-promotion/add-new-promotion.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 const routes: Routes = [
   {
@@ -67,7 +74,7 @@ const routes: Routes = [
     component: AddNewProductComponent,
   },
   {
-    path: 'details/:id',
+    path: 'product-details/:id',
     component: EcommerceDetailsComponent,
     data: { animation: 'EcommerceDetailsComponent' }
   },
@@ -77,9 +84,9 @@ const routes: Routes = [
     component: OrdersComponent
   },
   {
-    path: 'feedbackSupport',
+    path: 'feedback',
     canActivate: [AuthGuard],
-    component: FeedbackSupportComponent
+    component: FeedbackComponent
   },
   {
     path: 'promotions',
@@ -90,6 +97,16 @@ const routes: Routes = [
     path: 'promotion-detail/:id',
     canActivate: [AuthGuard],
     component: PromotionsDetailComponent
+  },
+  {
+    path: 'add-new-promotion',
+    canActivate: [AuthGuard],
+    component: AddNewPromotionComponent
+  },
+  {
+    path: 'edit-promotion-detail/:id',
+    canActivate: [AuthGuard],
+    component: EditPromotionComponent
   },
   {
     path: 'pending-approval',
@@ -107,6 +124,11 @@ const routes: Routes = [
     component: UserDetailsComponent
   },
   {
+    path: 'seller-details/:id',
+    canActivate: [AuthGuard],
+    component: SellerDetailsComponent
+  },
+  {
     path: 'edit-user-detail/:id',
     canActivate: [AuthGuard],
     component: UserDetailEditComponent
@@ -115,6 +137,16 @@ const routes: Routes = [
     path: 'edit-product-detail/:id',
     canActivate: [AuthGuard],
     component: EditProductComponent
+  },
+  {
+    path: 'buyer-order-detail/:id',
+    canActivate: [AuthGuard],
+    component: BuyerOrderDetailsComponent
+  },
+  {
+    path: 'seller-order-detail/:id',
+    canActivate: [AuthGuard],
+    component: OrderDetailsComponent
   }
 ]
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -143,7 +175,14 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     AddProductComponent,
     EditProductComponent,
     AddNewProductComponent,
-    SellerListComponent
+    SellerListComponent,
+    SellerDetailsComponent,
+    SellerProductDetailsComponent,
+    OrderDetailsComponent,
+    BuyerOrderDetailsComponent,
+    EditPromotionComponent,
+    AddNewPromotionComponent,
+    FeedbackComponent
   ],
   imports: [
     CommonModule,

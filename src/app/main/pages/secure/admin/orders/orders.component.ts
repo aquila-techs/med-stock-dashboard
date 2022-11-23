@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { OrderService } from '@core/services/admin-services/order.service';
 
 
 @Component({
@@ -17,32 +18,7 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 export class OrdersComponent implements OnInit {
   // Public
   public sidebarToggleRef = false;
-  public rows = [
-    {
-      id: 1,
-      name: 'Disperen 1',
-      quantity: '55 Pack',
-      price: "$12",
-      discount: "30%",
-      status: 'inactive',
-      avatar: ''
-    },{
-      id: 1,
-      name: 'Disperen 2',
-      quantity: '11 Pack',
-      price: "$41",
-      discount: "40%",
-      status: 'inactive',
-      avatar: ''
-    },{
-      id: 1,
-      name: 'Disperen 3',
-      quantity: '12 Pack',
-      price: "$41",
-      discount: "40%",
-      status: 'inactive',
-      avatar: ''
-    },];
+  public rows = [];
   public selectedOption = 10;
   public ColumnMode = ColumnMode;
   public temp = [];
@@ -81,6 +57,7 @@ export class OrdersComponent implements OnInit {
 
   // Decorator
   @ViewChild(DatatableComponent) table: DatatableComponent;
+  @ViewChild('tableRowDetails') tableRowDetails: any;
 
   // Private
   private tempData = [];
@@ -95,7 +72,8 @@ export class OrdersComponent implements OnInit {
    */
   constructor(
     private _coreSidebarService: CoreSidebarService,
-    private _coreConfigService: CoreConfigService
+    private _coreConfigService: CoreConfigService,
+    private orderService: OrderService
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -218,6 +196,12 @@ export class OrdersComponent implements OnInit {
         // });
       }
     });
+    this.orderService.getAllBuyerOrders('').subscribe({
+      next: (res)=>{
+        console.log(res);
+        this.rows = res[0].results;
+      }
+    })
   }
 
   /**
@@ -227,5 +211,9 @@ export class OrdersComponent implements OnInit {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+  }
+
+  rowDetailsToggleExpand(row) {
+    this.tableRowDetails.rowDetail.toggleExpandRow(row);
   }
 }

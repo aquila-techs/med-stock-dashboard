@@ -18,7 +18,7 @@ export const coreConfig: CoreConfig = {
   app: {
     appName     : 'MedStock',                                        // App Name
     appTitle    : 'Med Stock', // App Title
-    appLogoImage: 'assets/images/logo/logo.svg',                  // App Logo
+    appLogoImage: 'assets/images/logo/logo.png',                  // App Logo
     appLanguage : 'en',                                           // App Default Language (en, fr, de, pt etc..)
   },
   layout: {

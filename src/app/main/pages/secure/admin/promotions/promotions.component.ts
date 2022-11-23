@@ -1,135 +1,189 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { CoreConfigService } from '@core/services/config.service';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { ProductService } from '@core/services/admin-services/product.service';
+import { Router } from '@angular/router';
+import { PromotionService } from '@core/services/admin-services/promotion.service';
+
 
 @Component({
   selector: 'app-promotions',
   templateUrl: './promotions.component.html',
   styleUrls: ['./promotions.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'ecommerce-application' }
+  encapsulation: ViewEncapsulation.None
 })
 export class PromotionsComponent implements OnInit {
-  // public
-  public contentHeader: object;
-  public shopSidebarToggle = false;
-  public shopSidebarReset = false;
-  public gridViewRef = true;
-  public products = [
-    {
-      id: 1,
-      name: 'VicTsing Wireless Mouse,',
-      slug: 'vic-tsing-wireless-mouse-1',
-      description:
-        'After thousands of samples of palm data, we designed this ergonomic mouse. The laptop mouse has a streamlined arc and thumb rest to help reduce the stress caused by prolonged use of the laptop mouse.',
-      brand: 'VicTsing',
-      price: 10.99,
-      image: 'assets/images/promotion/promotion-banner.jpg',
-      hasFreeShipping: true,
-      rating: 3
-    },
-    {
-      id: 2,
-      name: 'Bose Frames Tenor - Rectangular Polarized, Bluetooth Audio Sunglasses',
-      slug: 'bose-frames-tenor-rectangular-polarized-bluetooth-audio-sunglasses-2',
-      description:
-        'Redesigned for luxury — Thoughtfully refined and strikingly elegant, the latest Bose sunglasses blend enhanced features and designs for an elevated way to listen',
-      brand: 'Bose',
-      price: 249.0,
-      image: 'assets/images/promotion/promotion-banner.jpg',
-      hasFreeShipping: false,
-      rating: 4
-    }];
-  public wishlist;
-  public cartList;
-  public page = 1;
-  public pageSize = 9;
-  public searchText = '';
+  // Public
+  public sidebarToggleRef = false;
+  public promotions = [];
+  public ColumnMode = ColumnMode;
+  public temp = [];
+
+  public searchValue = '';
+  public rows: any;
+  public pageSize=30;
+  public pageNo=1;
+  public total=0;
+  // Decorator
+  @ViewChild(DatatableComponent) table: DatatableComponent;
+
+  // Private
+  private tempData = [];
+  private _unsubscribeAll: Subject<any>;
 
   /**
+   * Constructor
    *
+   * @param {CoreConfigService} _coreConfigService
+   * @param {UserListService} _userListService
    * @param {CoreSidebarService} _coreSidebarService
-   * @param {EcommerceService} _ecommerceService
    */
-  constructor(private _coreSidebarService: CoreSidebarService) {}
+  constructor(
+    private _coreSidebarService: CoreSidebarService,
+    private _coreConfigService: CoreConfigService,
+    private promotionService: PromotionService,
+    private router: Router
+  ) {
+    this._unsubscribeAll = new Subject();
+  }
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Toggle Sidebar
-   *
-   * @param name
-   */
-  toggleSidebar(name): void {
-    this._coreSidebarService.getSidebarRegistry(name).toggleOpen();
-  }
-
-  /**
-   * Update to List View
-   */
-  listView() {
-    this.gridViewRef = false;
-  }
-
-  /**
-   * Update to Grid View
-   */
-  gridView() {
-    this.gridViewRef = true;
-  }
-
   
+
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------
-
   /**
    * On init
    */
   ngOnInit(): void {
-    
-    // Subscribe to ProductList change
-
-    // this._ecommerceService.onProductListChange.subscribe(res => {
-    //   this.products = res;
-    //   this.products.isInWishlist = false;
-    // });
-
-    // Subscribe to Wishlist change
-    // this._ecommerceService.onWishlistChange.subscribe(res => (this.wishlist = res));
-
-    // Subscribe to Cartlist change
-    // this._ecommerceService.onCartListChange.subscribe(res => (this.cartList = res));
-
-    // update product is in Wishlist & is in CartList : Boolean
-    // this.products.forEach(product => {
-    //   product.isInWishlist = this.wishlist.findIndex(p => p.productId === product.id) > -1;
-    //   product.isInCart = this.cartList.findIndex(p => p.productId === product.id) > -1;
-    // });
-
-    // content header
-    this.contentHeader = {
-      headerTitle: 'Shop',
-      actionButton: true,
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: 'Home',
-            isLink: true,
-            link: '/'
-          },
-          {
-            name: 'eCommerce',
-            isLink: true,
-            link: '/'
-          },
-          {
-            name: 'Shop',
-            isLink: false
-          }
-        ]
+    // Subscribe config change
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      //! If we have zoomIn route Transition then load datatable after 450ms(Transition will finish in 400ms)
+      if (config.layout.animation === 'zoomIn') {
+        setTimeout(() => {
+          // this._userListService.onUserListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+          //   this.rows = response;
+          //   this.tempData = this.rows;
+          // });
+        }, 450);
+      } else {
+        // this._userListService.onUserListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+        //   this.rows = response;
+        //   this.tempData = this.rows;
+        // });
       }
-    };
+    });
+    let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo;
+    this.promotionService.getAllPromotions(queryParams).subscribe({
+      next: (res)=>{
+          this.promotions = res[0].results;
+          this.promotions.map(elem => {
+            if(!elem.imageUrl){
+              elem['imageUrl'] = '';
+            }
+          })
+          if(res[0].count && res[0].count.length > 0){
+            this.total = res[0].count[0].totalCount;
+          }else{
+            this.total = 0;
+          }
+      }
+    })
+  }
+  loadPage(event){
+    this.pageNo = event;
+    let queryParams = '?pageSize='+this.pageSize+'&pageNo='+event;
+    if(this.searchValue.length > 3){
+      queryParams = queryParams + '&q='+this.searchValue; 
+    }
+    this.promotionService.getAllPromotions(queryParams).subscribe({
+      next: (res)=>{
+        this.promotions = res[0].results;
+        this.promotions.map(elem => {
+          if(!elem.imageUrl){
+            elem['imageUrl'] = '';
+          }
+        })
+        if(res[0].count && res[0].count.length > 0){
+          this.total = res[0].count[0].totalCount;
+        }else{
+          this.total = 0;
+        }
+      },
+      error: (err)=>{
+
+      }
+    })
+  }
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
+  public productDetail(product){
+    this.router.navigate(['/pages/admin/promotion-detail/' + product._id])
+  }
+
+  public productEdit(product){
+    this.router.navigate(['/pages/admin/edit-promotion-detail/' + product._id])
+  }
+
+  public searchProductName(){
+    if(this.searchValue.length > 3){
+      this.pageNo=1;
+      let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo+ '&q='+this.searchValue;
+      this.promotionService.getAllPromotions(queryParams).subscribe({
+        next: (res)=>{
+            this.promotions = res[0].results;
+            this.promotions.map(elem => {
+              if(!elem.imageUrl){
+                elem['imageUrl'] = '';
+              }
+            })
+            if(res[0].count && res[0].count.length > 0){
+              this.total = res[0].count[0].totalCount;
+            }else{
+              this.total = 0;
+            }
+        }
+      })
+    }else if(this.searchValue.length === 0){
+      this.pageNo=1;
+      let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo;
+      this.promotionService.getAllPromotions(queryParams).subscribe({
+        next: (res)=>{
+            this.promotions = res[0].results;
+            this.promotions.map(elem => {
+              if(!elem.imageUrl){
+                elem['imageUrl'] = '';
+              }
+            })
+            if(res[0].count && res[0].count.length > 0){
+              this.total = res[0].count[0].totalCount;
+            }else{
+              this.total = 0;
+            }
+        }
+      })
+    }
+    
+  }
+
+  public shortName(name){
+    if(name.split(' ').length > 2){
+      return name.split(' ')[0]+ " " + name.split(' ')[1];
+    }
+    return name;
   }
 }

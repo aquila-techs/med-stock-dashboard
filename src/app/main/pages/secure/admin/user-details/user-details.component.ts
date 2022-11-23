@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AdminService } from '@core/services/admin-services/admin.service';
+import { OrderService } from '@core/services/admin-services/order.service';
+import { ProductService } from '@core/services/admin-services/product.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 
 import { Subject } from 'rxjs';
@@ -18,62 +20,12 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   public url = this.router.url;
   public lastValue;
   public data;
-  public rows = [
-    {
-      id: 1,
-      name: 'Disperen 1',
-      quantity: '55 Pack',
-      price: "$12",
-      discount: "30%",
-      status: 'inactive',
-      avatar: ''
-    },{
-      id: 1,
-      name: 'Disperen 2',
-      quantity: '11 Pack',
-      price: "$41",
-      discount: "40%",
-      status: 'inactive',
-      avatar: ''
-    },{
-      id: 1,
-      name: 'Disperen 3',
-      quantity: '12 Pack',
-      price: "$41",
-      discount: "40%",
-      status: 'inactive',
-      avatar: ''
-    }];
-    public products = [
-      {
-        id: 1,
-        name: 'Disprin 1',
-        price: 155,
-        image: 'assets/images/medicine/disprin.png',
-        expiryDate: "2022-10-09T19:00:00.000Z",
-        status: 'active'
-      },
-      {
-        id: 2,
-        name: 'Disprin 2',
-        price: 1119,
-        image: 'assets/images/medicine/disprin.png',
-        expiryDate: "2022-10-09T19:00:00.000Z",
-        status: 'active'
-      },
-      {
-        id: 3,
-        name: 'Disprin 3',
-        price: 441,
-        image: 'assets/images/medicine/disprin.png',
-        expiryDate: "2022-10-09T19:00:00.000Z",
-        status: 'active'
-      }
-      
-  ];
+  public rows = [];
+    public products = [];
     public ColumnMode = ColumnMode;
   // private
   private _unsubscribeAll: Subject<any>;
+  @ViewChild('tableRowDetails') tableRowDetails: any;
 
   /**
    * Constructor
@@ -81,7 +33,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
    * @param {Router} router
    * @param {UserViewService} _userViewService
    */
-  constructor(private router: Router, private adminService: AdminService) {
+  constructor(private router: Router, private route: ActivatedRoute, private adminService: AdminService, private orderService: OrderService, private productService: ProductService) {
     this._unsubscribeAll = new Subject();
     this.lastValue = this.url.substr(this.url.lastIndexOf('/') + 1);
   }
@@ -95,39 +47,22 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     // this._userViewService.onUserViewChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
     //   this.data = response;
     // });
-    this.products = [
-      {
-        id: 1,
-        name: 'Disprin 1',
-        price: 155,
-        image: 'assets/images/medicine/disprin.png',
-        expiryDate: "2022-10-09T19:00:00.000Z",
-        status: 'active'
-      },
-      {
-        id: 2,
-        name: 'Disprin 2',
-        price: 1119,
-        image: 'assets/images/medicine/disprin.png',
-        expiryDate: "2022-10-09T19:00:00.000Z",
-        status: 'active'
-      },
-      {
-        id: 3,
-        name: 'Disprin 3',
-        price: 441,
-        image: 'assets/images/medicine/disprin.png',
-        expiryDate: "2022-10-09T19:00:00.000Z",
-        status: 'active'
-      }
-      
-  ];
-  this.adminService.selectedUser.subscribe({
-    next: (res)=>{
-      this.data = res;
-    }
-
+    this.products = [];
+    this.route.params.subscribe((params: Params) => {
+      const userId = params['id'];
+      let queryParam = '?userId='+userId
+      this.adminService.getProfile(userId).subscribe({
+        next: (res)=>{
+          this.data = res;
+        }
+      })
+      this.orderService.getAllBuyerOrders(queryParam).subscribe({
+        next: (value)=> {
+            this.rows = value[0].results;
+        },
+      })
   })
+
     // this.data =  {
     //   id: 1,
     //   fullName: 'Galen Slixby',
@@ -150,5 +85,16 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+  }
+  public shortName(name){
+    if(name.split(' ').length > 2){
+      return name.split(' ')[0]+ " " + name.split(' ')[1];
+    }
+    return name;
+  }
+
+
+  rowDetailsToggleExpand(row) {
+    this.tableRowDetails.rowDetail.toggleExpandRow(row);
   }
 }

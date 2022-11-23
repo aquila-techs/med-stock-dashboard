@@ -24,7 +24,7 @@
             <div class="col-12 col-md-7">
               <h4>{{ product.name }}</h4>
               <span class="card-text item-company"
-                >Category:  <a *ngIf="product.category && product.category.length > 0" href="javascript:void(0)" class="company-name">{{ product.category[0].title }}</a></span
+                >Category:  <a *ngIf="product.category " href="javascript:void(0)" class="company-name">{{ product.category.title }}</a></span
               >
               <div class="ecommerce-details-price d-flex flex-wrap mt-1">
                 <h4 class="item-price mr-1">${{ product.price }}</h4>
