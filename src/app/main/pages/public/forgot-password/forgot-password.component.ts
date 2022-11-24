@@ -5,6 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { CoreConfigService } from '@core/services/config.service';
+import { AdminService } from '@core/services/admin-services/admin.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -29,7 +32,8 @@ export class ForgotPasswordComponent implements OnInit {
    * @param {FormBuilder} _formBuilder
    *
    */
-  constructor(private _coreConfigService: CoreConfigService, private _formBuilder: UntypedFormBuilder) {
+  constructor(private _coreConfigService: CoreConfigService, private _formBuilder: UntypedFormBuilder,
+    private adminService: AdminService, private toatrService: ToastrService,private _router: Router) {
     this._unsubscribeAll = new Subject();
 
     // Configure the layout
@@ -61,9 +65,19 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.forgotPasswordForm.invalid) {
-      return;
+    // Not stop here if form is valid
+    if (!this.forgotPasswordForm.invalid) {
+      this.adminService.forgotPassword(this.forgotPasswordForm.value).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+        next: (res)=>{
+          if(res && res.message){
+            this.toatrService.success('Please check your email.', 'Something Wrong!')
+            return;
+          }
+
+          this.toatrService.success('Please check your email we have send you reset password link.','Sucessfully Send!');
+          this._router.navigate(['/login']);
+        }
+      })
     }
   }
 

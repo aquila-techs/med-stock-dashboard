@@ -56,4 +56,12 @@ export class AdminService {
   sellerDisapproved(id){
     return this._http.post('admin/seller-disapproved',id)
   }
+
+  forgotPassword(body){
+    return this._http.post('user/forget-password', body);
+  }
+
+  resetPassword(body){
+    return this._http.post('user/reset-password', body);
+  }
 }

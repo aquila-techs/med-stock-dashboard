@@ -28,6 +28,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { SignupComponent } from './main/pages/public/signup/signup.component';
 import { ForgotPasswordComponent } from './main/pages/public/forgot-password/forgot-password.component';
 import { LoginGuard } from '@core/guards/login.guards';
+import { AuthResetPasswordComponent } from './main/pages/public/reset-password/reset-password.component';
 
 
 const appRoutes: Routes = [
@@ -58,6 +59,13 @@ const appRoutes: Routes = [
 
   },
   {
+    path: 'reset-password/:token',
+    canActivate: [LoginGuard],
+    component: AuthResetPasswordComponent,
+    data: { animation: 'auth' }
+
+  },
+  {
     path: 'seller/login',
     canActivate: [LoginGuard],
     component: LoginComponent,
@@ -76,7 +84,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent, SignupComponent, ForgotPasswordComponent],
+  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent, SignupComponent, ForgotPasswordComponent, AuthResetPasswordComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
