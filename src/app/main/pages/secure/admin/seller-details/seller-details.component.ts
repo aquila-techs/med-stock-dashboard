@@ -49,7 +49,7 @@ export class SellerDetailsComponent implements OnInit, OnDestroy {
     this.products = [];
     this.route.params.subscribe((params: Params) => {
         const userId = params['id'];
-        let queryParam = '?userId='+userId
+        let queryParam = '?id='+userId
       
 
         this.adminService.getProfile(userId).subscribe({
@@ -65,7 +65,7 @@ export class SellerDetailsComponent implements OnInit, OnDestroy {
         let queryParamforProduct = '?id='+userId
         this.productService.getAllSellerProducts(queryParamforProduct).subscribe({
           next: (value)=> {
-              this.products = value;
+              this.products = value[0].results;
               this.products.map(elem => {
                 if(!value.product.imageUrl){
                   value.product['imageUrl'] = '';

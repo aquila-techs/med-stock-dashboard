@@ -196,7 +196,7 @@ export class OrdersComponent implements OnInit {
         // });
       }
     });
-    this.orderService.getAllBuyerOrders('').subscribe({
+    this.orderService.getAllSellerOrders('').subscribe({
       next: (res)=>{
         console.log(res);
         this.rows = res[0].results;

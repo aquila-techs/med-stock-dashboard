@@ -50,7 +50,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.products = [];
     this.route.params.subscribe((params: Params) => {
       const userId = params['id'];
-      let queryParam = '?userId='+userId
+      let queryParam = '?id='+userId
       this.adminService.getProfile(userId).subscribe({
         next: (res)=>{
           this.data = res;

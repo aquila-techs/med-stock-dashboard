@@ -29,6 +29,7 @@ import { SignupComponent } from './main/pages/public/signup/signup.component';
 import { ForgotPasswordComponent } from './main/pages/public/forgot-password/forgot-password.component';
 import { LoginGuard } from '@core/guards/login.guards';
 import { AuthResetPasswordComponent } from './main/pages/public/reset-password/reset-password.component';
+import { VerifyEmailComponent } from './main/pages/public/verify-email/verify-email.component';
 
 
 const appRoutes: Routes = [
@@ -66,6 +67,13 @@ const appRoutes: Routes = [
 
   },
   {
+    path: 'verify-email/:id',
+    canActivate: [LoginGuard],
+    component: VerifyEmailComponent,
+    data: { animation: 'auth' }
+
+  },
+  {
     path: 'seller/login',
     canActivate: [LoginGuard],
     component: LoginComponent,
@@ -84,7 +92,8 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent, SignupComponent, ForgotPasswordComponent, AuthResetPasswordComponent],
+  declarations: [AppComponent, ErrorComponent, LoginComponent, AdminLoginComponent, SignupComponent, 
+    ForgotPasswordComponent, AuthResetPasswordComponent, VerifyEmailComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

@@ -25,7 +25,7 @@ export class AdminService {
   }
 
   getProfile(id){
-    return this._http.get('user/me?id='+id)
+    return this._http.get('user/me/'+id)
   }
 
   getAllSeller(queryParams){
@@ -63,5 +63,8 @@ export class AdminService {
 
   resetPassword(body){
     return this._http.post('user/reset-password', body);
+  }
+  verifyEmail(id){
+    return this._http.get('user/verify-email/'+id);
   }
 }
