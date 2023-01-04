@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from '@core/services/admin-services/admin.service';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-seller-list',
@@ -80,4 +81,24 @@ export class SellerListComponent implements OnInit {
     this._router.navigate(['/pages/admin/seller-details/'+ sellerObj._id])
   }
 
+
+  public exportApprovedSeller(){
+    this.adminService.exportApprovedSeller().subscribe({
+      next: (res)=>{
+        if(res.path){
+          window.open(environment.apiUrl + res.path, 'blank');
+        }
+      }
+    })
+  }
+
+  public exportRejectedSeller(){
+    this.adminService.exportRejectedSeller().subscribe({
+      next: (res)=>{
+        if(res.path){
+          window.open(environment.apiUrl + res.path, 'blank');
+        }
+      }
+    })
+  }
 }

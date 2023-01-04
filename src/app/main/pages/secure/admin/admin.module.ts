@@ -45,6 +45,8 @@ import { BuyerOrderDetailsComponent } from './buyer-order-details/buyer-order-de
 import { EditPromotionComponent } from './promotions/edit-promotion/edit-promotion.component';
 import { AddNewPromotionComponent } from './promotions/add-new-promotion/add-new-promotion.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { Ng2FlatpickrModule } from 'ng2-flatpickr';
+import { ChartsModule } from 'ng2-charts';
 
 const routes: Routes = [
   {
@@ -199,7 +201,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     CoreTouchspinModule,
     CoreSidebarModule,
     NouisliderModule,
-    FileUploadModule
+    FileUploadModule,
+    Ng2FlatpickrModule,
+    ChartsModule
   ],
   providers: [
     DashboardService,

@@ -4,6 +4,7 @@ import { AdminService } from '@core/services/admin-services/admin.service';
 import { OrderService } from '@core/services/admin-services/order.service';
 import { ProductService } from '@core/services/admin-services/product.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
+import { environment } from 'environments/environment';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,7 +26,7 @@ export class SellerDetailsComponent implements OnInit, OnDestroy {
     public ColumnMode = ColumnMode;
   // private
   private _unsubscribeAll: Subject<any>;
-
+  public basePath = environment.apiUrl;
   /**
    * Constructor
    *

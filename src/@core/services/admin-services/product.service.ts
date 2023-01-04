@@ -29,6 +29,10 @@ export class ProductService {
     return this._http.get('product'+queryParams)
   }
 
+  searchProduct(queryParams, data){
+    return this._http.post('product/searchProduct'+queryParams,data)
+  }
+
   addNewProdcut(data){
     return this._http.post('product',data)
   }
@@ -39,5 +43,13 @@ export class ProductService {
 
   getAllSellerProducts(queryParam){
     return this._http.get('sellerProduct/get-seller-products'+queryParam)
+  }
+
+  exportProducts(queryParam){
+    return this._http.get('product/export-products'+queryParam)
+  }
+
+  deleteProduct(id){
+    return this._http.delete('product/'+id)
   }
 }

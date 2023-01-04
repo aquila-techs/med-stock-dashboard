@@ -9,6 +9,8 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { ProductService } from '@core/services/admin-services/product.service';
 import { Router } from '@angular/router';
 import { PromotionService } from '@core/services/admin-services/promotion.service';
+import { environment } from 'environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -31,6 +33,8 @@ export class PromotionsComponent implements OnInit {
   public total=0;
   // Decorator
   @ViewChild(DatatableComponent) table: DatatableComponent;
+  public basePath = environment.apiUrl;
+  public selectedPromotion: any = null;
 
   // Private
   private tempData = [];
@@ -47,7 +51,8 @@ export class PromotionsComponent implements OnInit {
     private _coreSidebarService: CoreSidebarService,
     private _coreConfigService: CoreConfigService,
     private promotionService: PromotionService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -185,5 +190,22 @@ export class PromotionsComponent implements OnInit {
       return name.split(' ')[0]+ " " + name.split(' ')[1];
     }
     return name;
+  }
+
+  public promotionDelete(){
+    this.promotionService.deletePromotion(this.selectedPromotion._id).subscribe({
+      next: (res)=>{
+        let index = this.promotions.findIndex(x => x._id === this.selectedPromotion._id);
+        this.promotions.splice(index,1);
+      }
+    })
+  }
+
+   // modal Open Default
+   modalOpenDefault(modalDefault,promotion) {
+    this.selectedPromotion = promotion;
+    this.modalService.open(modalDefault, {
+      centered: true
+    });
   }
 }

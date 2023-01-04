@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ProductService } from '@core/services/admin-services/product.service';
+import { environment } from 'environments/environment';
 
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
@@ -18,6 +19,7 @@ export class EcommerceDetailsComponent implements OnInit {
   public wishlist;
   public cartList;
   public relatedProducts;
+  public basePath = environment.apiUrl;
 
   // Swiper
   public swiperResponsive: SwiperConfigInterface = {

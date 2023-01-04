@@ -10,6 +10,7 @@ import { ProductService } from '@core/services/admin-services/product.service';
 import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from '@core/services/admin-services/promotion.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-edit-promotion',
@@ -30,7 +31,9 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
   public currentRow: any = null;
   public tempRow;
   public avatarImage: string = '';
+  public oldSelectedImage = null;
   public selectedImage = null;
+  public basePath = environment.apiUrl;
   @ViewChild('promotionForm') promotionForm: NgForm;
 
   // Private
@@ -110,6 +113,8 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
       this.promotionService.getPromotion(promotionId).subscribe({
         next: (res)=>{
           this.promotion = res;
+          this.oldSelectedImage = this.promotion.imageUrl;
+
         }
       })
     })

@@ -18,6 +18,15 @@
                           alt="User avatar"
                         />
                       </div>
+                      <div *ngIf="oldSelectedImage && !avatarImage">
+                        <img
+                          class="user-avatar users-avatar-shadow rounded mr-2 my-25 cursor-pointer"
+                          [src]="basePath + oldSelectedImage"
+                          height="90"
+                          width="90"
+                          alt="User avatar"
+                        />
+                      </div>
                       
                       <div class="media-body mt-50">
                         <div class="col-12 d-flex mt-1 px-0">

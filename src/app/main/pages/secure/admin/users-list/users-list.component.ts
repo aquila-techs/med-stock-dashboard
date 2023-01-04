@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from '@core/services/admin-services/admin.service';
 import { ColumnMode, DatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-users-list',
@@ -78,6 +79,26 @@ export class UsersListComponent implements OnInit {
   showUserDetailPage(sellerObj){
     this.adminService.setSelectedUser(sellerObj);
     this._router.navigate(['/pages/admin/user-details/'+ sellerObj._id])
+  }
+
+  public exportApprovedBuyer(){
+    this.adminService.exportApprovedBuyer().subscribe({
+      next: (res)=>{
+        if(res.path){
+          window.open(environment.apiUrl + res.path, 'blank');
+        }
+      }
+    })
+  }
+
+  public exportPendingVerificationBuyer(){
+    this.adminService.exportPendingVerificationBuyer().subscribe({
+      next: (res)=>{
+        if(res.path){
+          window.open(environment.apiUrl + res.path, 'blank');
+        }
+      }
+    })
   }
 
 }

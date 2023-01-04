@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PromotionService } from '@core/services/admin-services/promotion.service';
+import { environment } from 'environments/environment';
 
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
@@ -17,7 +18,7 @@ export class PromotionsDetailComponent implements OnInit {
   public contentHeader: object;
   public product :any;
   public promotion:any = [];
-
+  public basePath = environment.apiUrl;
   // Swiper
   public swiperResponsive: SwiperConfigInterface = {
     slidesPerView: 3,

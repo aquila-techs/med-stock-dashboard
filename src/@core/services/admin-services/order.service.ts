@@ -33,4 +33,12 @@ export class OrderService {
     return this._http.get('order/get-user-all-order'+queryParams)
   }
 
+  changeOrderStatus(data){
+    return this._http.put('order/update-status-order',data)
+  }
+
+  exportOrders(){
+    return this._http.get('order/export-orders')
+  }
+
 }

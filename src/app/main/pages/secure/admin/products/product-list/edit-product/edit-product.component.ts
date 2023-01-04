@@ -9,6 +9,7 @@ import { cloneDeep } from 'lodash';
 import { ProductService } from '@core/services/admin-services/product.service';
 import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-edit-product',
@@ -22,10 +23,12 @@ export class EditProductComponent implements OnInit, OnDestroy {
   public urlLastValue;
   public tempRow;
   public avatarImage: string = '';
+  public oldSelectedImage = null;
   public product: any;
   public selectedImage = null;
   public categories = [];
   @ViewChild('productForm') productForm: NgForm;
+  public basePath = environment.apiUrl;
 
   public birthDateOptions: FlatpickrOptions = {
     altInput: true
@@ -107,7 +110,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.productService.selectProduct.subscribe(res => {
       this.product = res;
-      this.avatarImage = this.product.imageUrl;
+      this.oldSelectedImage = this.product.imageUrl;
       if(this.product.expiryDate){
         let expiryDate = this.product.expiryDate;
       }

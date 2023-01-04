@@ -26,5 +26,8 @@ export class PromotionService {
     return this._http.put('promotion/'+id,data)
   }
 
- 
+  deletePromotion(id){
+    return this._http.delete('promotion/'+id)
+  }
+
 }

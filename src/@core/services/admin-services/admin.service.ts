@@ -67,4 +67,22 @@ export class AdminService {
   verifyEmail(id){
     return this._http.get('user/verify-email/'+id);
   }
+
+  exportApprovedSeller(){
+    return this._http.get('user/export-approved-seller');
+  }
+  exportRejectedSeller(){
+    return this._http.get('user/export-rejected-seller');
+  }
+  exportPendingApprovalSeller(){
+    return this._http.get('user/export-pending-approval-seller');
+  }
+
+  exportApprovedBuyer(){
+    return this._http.get('user/export-approved-buyer');
+  }
+
+  exportPendingVerificationBuyer(){
+    return this._http.get('user/export-pending-verification-buyer');
+  }
 }

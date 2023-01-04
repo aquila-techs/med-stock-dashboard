@@ -99,13 +99,13 @@
           [headerHeight]="50"
           [scrollbarH]="true"
         >
-          <ngx-datatable-column name="Image" prop="name" [width]="300">
+          <ngx-datatable-column name="Image" prop="name" [width]="50">
             <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
               <div class="d-flex align-items-center">
                 <div *ngIf="row.imageUrl !== ''; else customAvatar">
                   <img
                     class="rounded-circle mr-1"
-                    src="{{ row.imageUrl }}"
+                    src="{{basePath}}{{ row.imageUrl }}"
                     height="32"
                     width="32"
                     alt=""
@@ -131,8 +131,8 @@
               </div>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Title" prop="title" [width]="100"></ngx-datatable-column>
-          <ngx-datatable-column name="Description" prop="description" [width]="100"></ngx-datatable-column>
+          <ngx-datatable-column name="Title" prop="title" [width]="200"></ngx-datatable-column>
+          <ngx-datatable-column name="Description" prop="description" [width]="200"></ngx-datatable-column>
 
           
           <ngx-datatable-column name="Actions" [width]="40" [sortable]="false">
@@ -147,6 +147,9 @@
                   ><a (click)="productEdit(row)" ngbDropdownItem
                     ><span [data-feather]="'edit'" [size]="16" [class]="'mr-50'"></span> Edit</a
                   >
+                  <a (click)="modalOpenDefault(modalDefault,row)" ngbDropdownItem
+                  ><span [data-feather]="'trash'" [size]="16" [class]="'mr-50'"></span> Delete</a
+                >
                   <!-- <a href="javascript:;" ngbDropdownItem
                     ><span [data-feather]="'trash'" [size]="16" [class]="'mr-50'"></span> Delete</a
                   > -->
@@ -171,3 +174,24 @@
   </core-sidebar>
   <!--/ New User Sidebar -->
 </div>
+ <!-- Modal -->
+ <ng-template #modalDefault let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="myModalLabel160">Confirmation</h5>
+    <!-- <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+   You realy want to delete the promotion?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('Cross click');promotionDelete()" rippleEffect>
+      Delete
+    </button>
+    <button type="button" class="btn btn-primary" (click)="modal.dismiss('Cross click')" rippleEffect>
+      Cancel
+    </button>
+  </div>
+</ng-template>
+<!-- / Modal -->

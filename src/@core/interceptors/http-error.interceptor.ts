@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -19,11 +19,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private _authenticationService: AuthenticationService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    setTimeout(()=>{
-        this.spinner.hide('main');
-    },200) 
+   
     return next.handle(request).pipe(
+    
       catchError(err => {
+        this.spinner.hide('main');
         if ([401, 403].indexOf(err.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           this._authenticationService.logout();
@@ -38,6 +38,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         );
         return throwError(error);
       })
-    );
+    ).pipe(map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
+      if (evt instanceof HttpResponse) {
+        this.spinner.hide('main');
+      }
+      return evt;
+    }));;
   }
 }

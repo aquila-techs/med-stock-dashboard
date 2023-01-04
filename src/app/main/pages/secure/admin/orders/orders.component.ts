@@ -7,6 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { OrderService } from '@core/services/admin-services/order.service';
+import { ToastrService } from 'ngx-toastr';
+import { environment } from 'environments/environment';
 
 
 @Component({
@@ -54,7 +56,9 @@ export class OrdersComponent implements OnInit {
   public selectedPlan = [];
   public selectedStatus = [];
   public searchValue = '';
-
+  public pageSize=30;
+  public pageNo=1;
+  public total=0;
   // Decorator
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('tableRowDetails') tableRowDetails: any;
@@ -73,7 +77,8 @@ export class OrdersComponent implements OnInit {
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _coreConfigService: CoreConfigService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private toastService: ToastrService
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -196,10 +201,16 @@ export class OrdersComponent implements OnInit {
         // });
       }
     });
-    this.orderService.getAllSellerOrders('').subscribe({
+    let queryParams = '?pageSize='+this.pageSize+'&pageNo='+this.pageNo;
+    this.orderService.getAllSellerOrders(queryParams).subscribe({
       next: (res)=>{
         console.log(res);
         this.rows = res[0].results;
+        if(res[0].count && res[0].count.length > 0){
+          this.total = res[0].count[0].totalCount;
+        }else{
+          this.total = 0;
+        }
       }
     })
   }
@@ -215,5 +226,42 @@ export class OrdersComponent implements OnInit {
 
   rowDetailsToggleExpand(row) {
     this.tableRowDetails.rowDetail.toggleExpandRow(row);
+  }
+
+  loadPage(event){
+    this.pageNo = event;
+    let queryParams = '?pageSize='+this.pageSize+'&pageNo='+event;
+    this.orderService.getAllSellerOrders(queryParams).subscribe({
+      next: (res)=>{
+        console.log(res);
+        this.rows = res[0].results;
+        if(res[0].count && res[0].count.length > 0){
+          this.total = res[0].count[0].totalCount;
+        }else{
+          this.total = 0;
+        }
+      }
+    })
+  }
+  public changeOrderStatus(event, row){
+    // alert(event.target.value +" - - - - "+ row.status);
+    let data = {
+      "orderId":row._id,
+      "status": event.target.value
+    }
+    this.orderService.changeOrderStatus(data).subscribe({
+      next: (res)=>{
+        this.toastService.success("Status Successfully Updated.")
+      }
+    })
+  }
+  public exportOrders(){
+    this.orderService.exportOrders().subscribe({
+      next: (res)=>{
+        if(res.path){
+          window.open(environment.apiUrl + res.path, 'blank');
+        }
+      }
+    })
   }
 }
