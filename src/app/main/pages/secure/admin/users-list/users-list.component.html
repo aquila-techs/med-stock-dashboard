@@ -76,6 +76,7 @@
             </a>
           </ng-template>
         </ngx-datatable-column>
+        
         <ngx-datatable-column name="#" prop="id" [width]="20">
           <ng-template let-row="row"  let-rowIndex='rowIndex' let-name="value" ngx-datatable-cell-template>
             <div class="d-flex align-items-center">
@@ -110,15 +111,21 @@
             </div>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Date" prop="createdAt" >
-          <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
-            {{row.createdAt | date }}
-            </ng-template>
-
-        </ngx-datatable-column>
-        <ngx-datatable-column name="Pharmacy Name" prop="pharmacyName"></ngx-datatable-column>
+       
+        <!-- <ngx-datatable-column name="Pharmacy Name" prop="pharmacyName"></ngx-datatable-column> -->
         <!-- <ngx-datatable-column name="USER ID" prop="_id"></ngx-datatable-column> -->
-        <ngx-datatable-column name="Registration Number" prop="businessId" ></ngx-datatable-column>
+        <!-- <ngx-datatable-column name="Registration Number" prop="businessId" ></ngx-datatable-column> -->
+        <ngx-datatable-column name="Name" prop="firstName">
+          <ng-template let-row="row"   >
+            {{row.firstName + row.lastName}}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Email" prop="email">
+          <ng-template let-row="row"  >
+            {{row.email}}
+          </ng-template>
+        </ngx-datatable-column>
 
         <ngx-datatable-column name="Approved" prop="isEmailVerified" >
           <ng-template let-isEmailVerified="value" ngx-datatable-cell-template>
@@ -137,6 +144,12 @@
               }}
             </div>
           </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Register Date" prop="createdAt" >
+          <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+            {{row.createdAt | date }}
+            </ng-template>
+
         </ngx-datatable-column>
         <ngx-datatable-column name="Actions" [sortable]="false">
           <ng-template ngx-datatable-cell-template let-row="row">
