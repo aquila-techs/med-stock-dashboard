@@ -16,6 +16,7 @@ export class PendingApprovalComponent implements OnInit {
   public pageSize=10;
   public pageNo=1;
   public total=0;
+  public baseUrl = environment.apiUrl;
   @ViewChild('tableRowDetails') tableRowDetails: any;
 
   constructor(private adminService: AdminService, private _router: Router) { }

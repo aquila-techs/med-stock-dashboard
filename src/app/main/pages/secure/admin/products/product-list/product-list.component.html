@@ -54,7 +54,7 @@
   
         <div class="card">
           <div class="row">
-            <div class="col-md-3 col-12">
+            <div class="col-md-6 col-12">
               <div class="d-flex justify-content-between align-items-center mt-1 ml-1">
                 <!-- <label class="d-flex align-items-center"
                 >Show
@@ -78,7 +78,7 @@
                 
               </div>
             </div>
-            <div class="col-md-9 col-12 d-flex justify-content-start justify-content-md-end mt-1">
+            <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end mt-1">
               <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
               
                 <a class="btn  btn-primary ml-1" routerLink="/pages/admin/add-new-product" 
@@ -87,14 +87,17 @@
                     <!-- <a class="btn  btn-primary ml-1"  (click)="exportProducts()"
                   >Export Products</a
                 > -->
-                <a type="button"
+                <!-- <a type="button"
                 class="btn btn-outline-primary  ml-1"
                 (click)="isCollapseExportSection = !isCollapseExportSection; isCollapseSearchSection = true;"
                 [attr.aria-expanded]="!isCollapseExportSection"
                 aria-controls="collapseExample4"
                 rippleEffect>
                   Export Products
-                </a>
+                </a> -->
+                <a class="btn  btn-primary ml-1" (click)="exportProducts()" 
+                >Export Product </a
+                >
                 <a type="button"
                 class="btn btn-outline-primary  ml-1"
                 (click)="isCollapseSearchSection = !isCollapseSearchSection; isCollapseExportSection = true;"

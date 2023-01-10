@@ -38,9 +38,10 @@
           <div class="ml-75 pl-5 pt-1 pb-1">
             <div class="d-flex">
               <div class="w-50">
-                <span><strong>Email : </strong> {{ row.email}}</span><br>
                 <span><strong>Address : </strong> {{ row.address }}</span><br>
                 <span><strong>Phone Number : </strong> {{ row.phone}}</span><br>
+                <span><strong>Registration No : </strong> {{ row.businessId}}</span><br>
+
               </div>
               <div>
                 <a  (click)="showUserDetailPage(row)" class="btn btn-primary mr-2 mb-2" rippleEffect 
@@ -108,17 +109,35 @@
           </div>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Date" prop="createdAt" >
+      <!-- <ngx-datatable-column name="Date" prop="createdAt" >
         <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
           {{row.createdAt | date }}
           </ng-template>
 
+      </ngx-datatable-column> -->
+      <ngx-datatable-column name="Name" prop="firstName">
+        <ng-template let-row="row"   >
+          {{row.firstName + row.lastName}}
+        </ng-template>
       </ngx-datatable-column>
+      <ngx-datatable-column name="Email" prop="email"></ngx-datatable-column>
+
       <ngx-datatable-column name="Pharmacy Name" prop="pharmacyName"></ngx-datatable-column>
       <!-- <ngx-datatable-column name="USER ID" prop="_id"></ngx-datatable-column> -->
-      <ngx-datatable-column name="Registration Number" prop="businessId" ></ngx-datatable-column>
+      <!-- <ngx-datatable-column name="Registration Number" prop="businessId" ></ngx-datatable-column> -->
+      <ngx-datatable-column name="Legal Document" prop="legalDocument" width="30">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <div *ngIf="row.legalDocument">
+              <a href="{{baseUrl}}{{row.legalDocument}}" target="_blank"><i data-feather="file"></i></a>
+            </div>
+            <div *ngIf="!row.legalDocument">
+              N/A
+            </div>
+          </ng-template>
 
-      <ngx-datatable-column name="Approved" prop="isEmailVerified" >
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Approved" prop="isEmailVerified" width="30">
         <ng-template let-isEmailVerified="value" ngx-datatable-cell-template>
           <div
             class="badge badge-pill"
@@ -136,7 +155,7 @@
           </div>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Actions" [sortable]="false">
+      <ngx-datatable-column name="Actions" [sortable]="false" width="20">
         <ng-template ngx-datatable-cell-template let-row="row">
           <div class="d-flex align-items-center">
             <!-- <div ngbDropdown container="body">

@@ -63,7 +63,7 @@ export const adminMenu: CoreMenu[] = [
   },
   {
     id: 'feedback',
-    title: 'feedback',
+    title: 'Support',
     type: 'item',
     icon: 'twitch',
     url: 'pages/admin/feedback'

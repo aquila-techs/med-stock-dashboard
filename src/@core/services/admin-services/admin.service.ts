@@ -85,4 +85,8 @@ export class AdminService {
   exportPendingVerificationBuyer(){
     return this._http.get('user/export-pending-verification-buyer');
   }
+  
+  getAllCategories(){
+    return this._http.get('category/');
+  }
 }
