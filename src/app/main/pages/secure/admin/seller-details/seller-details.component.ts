@@ -105,4 +105,25 @@ export class SellerDetailsComponent implements OnInit, OnDestroy {
     }
     return name;
   }
+
+  sellerDocApproved(id){
+    this.adminService.sellerDocApproved({_id: id}).subscribe({
+      next: (res)=>{
+        this.data = res;
+      },
+      error: (err)=>{
+      }
+    })
+  }
+
+  sellerDocDisapproved(id){
+    this.adminService.sellerDocDisapproved({_id: id}).subscribe({
+      next: (res)=>{
+        this.data = res;
+      },
+      error: (err)=>{
+
+      }
+    })
+  }
 }

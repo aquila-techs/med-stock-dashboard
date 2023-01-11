@@ -131,6 +131,65 @@
                 </div>
               </div>
             </div>
+            <div class="col-xl-12 col-lg-12 col-md-12">
+              <h4>Legal Documents</h4>
+              <div class="card user-card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                      <div *ngIf="data.pharmacyLicenseDoc" class="text-center">
+                        <h5> Pharmacy License Document </h5>
+                        <a href="{{basePath}}{{data.pharmacyLicenseDoc}}" target="_blank"><i  width="40" height="40" data-feather="file"></i></a>
+                      </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12">
+                      <div *ngIf="data.taxIdDoc"  class="text-center">
+                        <h5> Tax ID Document </h5>
+                        <a href="{{basePath}}{{data.taxIdDoc}}" target="_blank"><i style="width: 100px; height: 100px;" width="40" height="40" data-feather="file"></i></a>
+                      </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12">
+                      <div class="text-right d-flex justify-content-end">
+                        <div class="mr-3"> 
+                          <div
+                          class="badge badge-pill"
+                          [ngClass]="{
+                            'badge-light-success': data.isDocVerified,
+                            'badge-light-danger': ! data.isDocVerified 
+                          }"
+                        >
+                          {{
+                            data.isDocVerified
+                              ? 'Approved'
+                              : 'Disapproved'
+                              
+                          }}
+                        </div>
+                        </div>
+                        <div class="cursor-pointer" (click)="sellerDocApproved(data._id)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  color="green"
+                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                           stroke-linecap="round" stroke-linejoin="round"
+                           class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <!-- <i data-feather="alert" class="text-muted cursor-pointer"></i> -->
+                        <div class=" cursor-pointer" (click)="sellerDocDisapproved(data._id)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" color="red"
+                          height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                          class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18">
+                          </line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
+            
+            
+            
+            </div>
             <!-- /User Card Ends-->
     
             <!-- Plan Card starts-->
@@ -418,7 +477,7 @@
                   <div *ngIf="row.product.imageUrl !== ''; else customAvatar">
                     <img
                       class="rounded-circle mr-1"
-                      src="{{ row.product.imageUrl }}"
+                      src="{{basePath}}{{ row.product.imageUrl }}"
                       height="32"
                       width="32"
                       alt=""

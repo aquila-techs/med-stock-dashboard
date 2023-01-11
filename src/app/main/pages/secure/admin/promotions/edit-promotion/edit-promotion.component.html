@@ -76,7 +76,89 @@
                           </div>
                         </div>
                        
-                        
+                        <div class="col-4">
+                          <div class="mb-2">
+                           Promotion Type
+                          </div> 
+                            <div class="form-group d-flex">
+                              <div class="mr-2">
+                                <div class="custom-control custom-radio">
+                                 <input type="radio"
+                                 name="pType"
+                                 id="pType"
+                                 value="image" [(ngModel)]="promotion.type" (click)="promotion.videoLink=''" checked="" #pType="ngModel" class="custom-control-input">
+                                 <label for="pType" class="custom-control-label">Image</label>
+                               </div>
+                              </div>
+                              <div class="mr-2 ">
+                                <div class="custom-control custom-radio">
+                                 <input type="radio"
+                                 value="link"
+                                 name="pType"  
+                                 id="vType" [(ngModel)]="promotion.type" 
+                                 #vType="ngModel" checked="" class="custom-control-input">
+                                 <label for="vType" class="custom-control-label">Video Link</label>
+                               </div>
+                              </div>
+                             </div>
+                         </div> 
+                         <div class="col-md-8" *ngIf="promotion.type === 'link'">
+                           <div class="form-group">
+                             <label for="title">Video Link</label>
+                             <input
+                               type="text"
+                               id="videoLink"
+                               value="videoLink"
+                               class="form-control"
+                               name="videoLink"
+                               [(ngModel)]="promotion.videoLink"
+                               #videoLink="ngModel"
+                               required
+                             />
+                           </div>
+                         </div>
+                         <div class="col-12"></div>
+                         <div class="col-4">
+                           <div class="mb-2">
+                            Promotion Base on Category or Product
+                           </div> 
+                             <div class="form-group d-flex">
+                               <div class="mr-2">
+                                 <div class="custom-control custom-radio">
+                                  <input type="radio"
+                                  name="promotionType"
+                                  id="category"
+                                  value="category" [(ngModel)]="promotion.promotionType" (click)="promotion.categoryId='635565afd7cb9f568295d74c'" checked="" #categoryType="ngModel" class="custom-control-input">
+                                  <label for="category" class="custom-control-label">Category</label>
+                                </div>
+                               </div>
+                               <div class="mr-2 ">
+                                 <div class="custom-control custom-radio">
+                                   <input type="radio"
+                                   name="promotionType"
+                                   id="product"
+                                   value="product" [(ngModel)]="promotion.promotionType" checked="" #productType="ngModel" class="custom-control-input">
+                                   <label for="product" class="custom-control-label">Seller Product</label>
+                                 </div>
+                               </div>
+                              </div>
+                          </div> 
+                     
+                         <div class="col-md-8 d-flex" *ngIf="promotion.promotionType === 'category'">
+                           <div *ngFor="let category of allCategories; let i = index"  class="mr-2 mt-3">
+                              <div class="custom-control custom-radio"><input type="radio"  [(ngModel)]="promotion.categoryId" 
+                               [value]="category._id" id="customCheck{{i}}" name="category" class="custom-control-input">
+                               <label for="customCheck{{i}}" class="custom-control-label">{{category.title}}</label></div>
+                            </div>
+                         </div>
+                         <div class="col-md-8 d-flex" *ngIf="promotion.promotionType === 'product'">
+                           <div   class="mr-2 mt-2 form-group" style="width: 100%;">
+                              <select class="form-control" [(ngModel)]="promotion.productId" name="productDropdown">
+                               <option *ngFor="let product of products; let i = index"
+                               [value]="product._id" >{{product.product.name}}</option>
+                               </select>
+                            </div>
+                         </div>
                        
                         <div class="col-md-12">
                           <div class="form-group">

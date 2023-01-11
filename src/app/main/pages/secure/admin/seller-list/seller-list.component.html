@@ -121,17 +121,7 @@
         <ngx-datatable-column name="Pharmacy Name" prop="pharmacyName"></ngx-datatable-column>
         <!-- <ngx-datatable-column name="USER ID" prop="_id"></ngx-datatable-column> -->
         <!-- <ngx-datatable-column name="Registration Number" prop="businessId" ></ngx-datatable-column> -->
-        <ngx-datatable-column name="Legal Document" prop="legalDocument" width="30">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-              <div *ngIf="row.legalDocument">
-                <a href="{{baseUrl}}{{row.legalDocument}}" target="_blank"><i data-feather="file"></i></a>
-              </div>
-              <div *ngIf="!row.legalDocument">
-                N/A
-              </div>
-            </ng-template>
-  
-        </ngx-datatable-column>
+       
         <ngx-datatable-column name="Approved" prop="isProfileVerified" width="30">
           <ng-template let-isProfileVerified="value" ngx-datatable-cell-template>
             <div

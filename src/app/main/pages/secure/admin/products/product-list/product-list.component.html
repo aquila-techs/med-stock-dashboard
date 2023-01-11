@@ -116,7 +116,7 @@
                           <div class="row">
                             <div class="col-4">
                               <div class="form-group">
-                                <label class="form-label" for="login-email">Name</label>
+                                <label class="form-label" for="login-email"><b>Name</b></label>
                                 <input
                                   type="text"
                                   formControlName="productName"
@@ -128,7 +128,7 @@
                             </div>
                             <div class="col-4">
                               <div class="form-group">
-                                <label class="form-label" for="login-email">SKU</label>
+                                <label class="form-label" for="login-email"><b>SKU</b></label>
                                 <input
                                   type="text"
                                   formControlName="sku"
@@ -140,7 +140,7 @@
                             </div>
                             <div class="col-4">
                               <div class="form-group">
-                                <label class="form-label" for="login-email">Price</label>
+                                <label class="form-label" for="login-email"><b>Price</b></label>
                                 <input
                                   type="text"
                                   formControlName="price"
@@ -151,43 +151,69 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                              Categories
+                              <b>Categories</b>
                               <div class="form-group d-flex">
                                
                                  <div *ngFor="let category of categories; let i = index" formArrayName="categories" class="mr-2">
-                                  <input type="checkbox" [formControlName]="i" >
-                                   <span>{{category.title}}</span>
+                                  <!-- <input type="checkbox" [formControlName]="i" >
+                                   <span>{{category.title}}</span> -->
+
+                                   <div class="custom-control custom-checkbox"><input type="checkbox"  [formControlName]="i"
+                                    id="customCheck{{i}}" checked="" class="custom-control-input">
+                                    <label for="customCheck{{i}}" class="custom-control-label">{{category.title}}</label></div>
                                  </div>
                                  </div>
                               </div>
                               
+                              
                               <div class="col-6">
-                                Sort By
+                                <b>Sort By</b>
                                 <div class="form-group d-flex">
                                    <div class="mr-2">
-                                    <input type="radio" name="sortBy" value="name" formControlName="sortBy" >
-                                     <span>Name</span>
+                                    <!-- <input type="radio" name="sortBy" value="name" formControlName="sortBy" >
+                                     <span>Name</span> -->
+                                     <div class="custom-control custom-radio">
+                                      <input type="radio" id="customRadio1" formControlName="sortBy" name="sortBy" value="name" checked="" class="custom-control-input">
+                                      <label for="customRadio1" class="custom-control-label">Name</label>
+                                    </div>
                                    </div>
                                    <div class="mr-2">
-                                    <input type="radio" name="sortBy" value="sku" formControlName="sortBy" >
-                                     <span>SKU</span>
+                                    <!-- <input type="radio" name="sortBy" value="sku" formControlName="sortBy" >
+                                     <span>SKU</span> -->
+                                     <div class="custom-control custom-radio">
+                                      <input type="radio" id="customRadio2" formControlName="sortBy" name="sortBy" value="sku" checked="" class="custom-control-input">
+                                      <label for="customRadio2" class="custom-control-label">SKU</label>
+                                    </div>
                                    </div>
                                   <div class="mr-2">
-                                    <input type="radio" name="sortBy" value="price" formControlName="sortBy" >
-                                     <span>Price</span>
+                                    <!-- <input type="radio" name="sortBy" value="price" formControlName="sortBy" >
+                                     <span>Price</span> -->
+
+                                     <div class="custom-control custom-radio">
+                                      <input type="radio" id="customRadio3" formControlName="sortBy" name="sortBy" value="price" checked="" class="custom-control-input">
+                                      <label for="customRadio3" class="custom-control-label">Price</label>
+                                    </div>
                                    </div>
                                 </div>
                                   </div>
                                   <div class="col-8">
-                                    Order By
+                                    <b>Order By</b>
                                     <div class="form-group d-flex">
                                        <div class="mr-2">
-                                        <input type="radio" name="orderBy" value="asc" formControlName="orderBy" >
-                                         <span>Ascending</span>
+                                        <!-- <input type="radio" name="orderBy" value="asc" formControlName="orderBy" >
+                                         <span>Ascending</span> -->
+                                         <div class="custom-control custom-radio">
+                                          <input type="radio" id="customRadio11" formControlName="orderBy" name="orderBy" value="asc" checked="" class="custom-control-input">
+                                          <label for="customRadio11" class="custom-control-label">Ascending</label>
+                                        </div>
                                        </div>
                                        <div class="mr-2">
-                                        <input type="radio" name="orderBy" value="desc" formControlName="orderBy" >
-                                         <span>Descending</span>
+                                        <div class="custom-control custom-radio">
+                                          <input type="radio" id="customRadio12" formControlName="orderBy" name="orderBy" value="desc" checked="" class="custom-control-input">
+                                          <label for="customRadio12" class="custom-control-label">Descending</label>
+                                        </div>
+                                        <!-- <input type="radio" name="orderBy" value="desc" formControlName="orderBy" >
+                                         <span>Descending</span> -->
                                        </div>
                                       </div>
                                   </div>

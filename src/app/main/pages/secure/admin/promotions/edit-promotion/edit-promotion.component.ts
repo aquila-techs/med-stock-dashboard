@@ -11,6 +11,7 @@ import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from '@core/services/admin-services/promotion.service';
 import { environment } from 'environments/environment';
+import { AdminService } from '@core/services/admin-services/admin.service';
 
 @Component({
   selector: 'app-edit-promotion',
@@ -23,11 +24,6 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
   public url = this.router.url;
   public urlLastValue;
   public categories: any;
-  public promotion: any = {
-    'title': '',
-    'imageUrl': '',
-    'description': ''
-  };
   public currentRow: any = null;
   public tempRow;
   public avatarImage: string = '';
@@ -35,7 +31,18 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
   public selectedImage = null;
   public basePath = environment.apiUrl;
   @ViewChild('promotionForm') promotionForm: NgForm;
-
+  public promotion: any = {
+    'title': '',
+    'imageUrl': '',
+    'description': '',
+    'type':'image',
+    'videoLink': '',
+    'categoryId': '635565afd7cb9f568295d74c',
+    'productId': '',
+    'promotionType': 'category'
+  };
+  public allCategories = [];
+  public products = [];
   // Private
   private _unsubscribeAll: Subject<any>;
 
@@ -46,7 +53,9 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
    * @param {UserEditService} _userEditService
    */
   constructor(private router: Router, private promotionService: PromotionService, private route: ActivatedRoute,
-    private toastrService: ToastrService) {
+    private toastrService: ToastrService,
+    private productService: ProductService,
+    private adminService: AdminService) {
     this._unsubscribeAll = new Subject();
     this.urlLastValue = this.url.substr(this.url.lastIndexOf('/') + 1);
   }
@@ -91,6 +100,18 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
       }
       formData.append('title',this.promotion.title);
       formData.append('description',this.promotion.description);
+      if(this.promotion.type === 'link'){
+        formData.append('videoLink',this.promotion.videoLink);
+        formData.append('type','link');
+      }else{
+        formData.append('type','image');
+      }
+      if(this.promotion.promotionType === 'category'){
+        formData.append('categoryId',this.promotion.categoryId);
+      }
+      if(this.promotion.promotionType === 'product'){
+        formData.append('productId',this.promotion.productId);
+      }
       this.promotionService.updatePromotion(this.promotion._id, formData).subscribe({
         next: (res)=>{
           console.log(res);
@@ -114,10 +135,16 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
         next: (res)=>{
           this.promotion = res;
           this.oldSelectedImage = this.promotion.imageUrl;
-
+          if(this.promotion.categoryId != ''){
+            this.promotion.promotionType =  'category';
+          }else{
+            this.promotion.promotionType =  'product';
+          }
         }
       })
     })
+    this.getAllCategories();
+    this.getAllSellerProduct();
   }
 
   /**
@@ -127,5 +154,26 @@ export class EditPromotionComponent implements OnInit, OnDestroy {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+  }
+
+  public getAllCategories(){
+    this.adminService.getAllCategories().subscribe({
+      next: (res)=>{
+          this.allCategories = res;
+      }
+    })
+  }
+
+  public getAllSellerProduct(){
+    this.productService.getAllSellerProducts('').subscribe({
+      next: (value)=> {
+          this.products = value[0].results;
+          this.products.map(elem => {
+            if(!value.product.imageUrl){
+              value.product['imageUrl'] = '';
+            }
+          })
+      },
+  })
   }
 }

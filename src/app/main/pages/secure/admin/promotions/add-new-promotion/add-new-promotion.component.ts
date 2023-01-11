@@ -10,6 +10,7 @@ import { ProductService } from '@core/services/admin-services/product.service';
 import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { PromotionService } from '@core/services/admin-services/promotion.service';
+import { AdminService } from '@core/services/admin-services/admin.service';
 
 @Component({
   selector: 'app-add-new-promotion',
@@ -25,14 +26,20 @@ export class AddNewPromotionComponent implements OnInit, OnDestroy {
   public promotion: any = {
     'title': '',
     'imageUrl': '',
-    'description': ''
+    'description': '',
+    'type':'image',
+    'videoLink': '',
+    'categoryId': '635565afd7cb9f568295d74c',
+    'productId': '',
+    'promotionType': 'category'
   };
   public currentRow: any = null;
   public tempRow;
   public avatarImage: string = '';
   public selectedImage = null;
   @ViewChild('promotionForm') promotionForm: NgForm;
-
+  public allCategories = [];
+  public products = [];
   // Private
   private _unsubscribeAll: Subject<any>;
 
@@ -42,8 +49,9 @@ export class AddNewPromotionComponent implements OnInit, OnDestroy {
    * @param {Router} router
    * @param {UserEditService} _userEditService
    */
-  constructor(private router: Router, private promotionService: PromotionService, 
-    private toastrService: ToastrService) {
+  constructor(private router: Router, private promotionService: PromotionService, private adminService: AdminService,
+    private toastrService: ToastrService,
+    private productService: ProductService) {
     this._unsubscribeAll = new Subject();
     this.urlLastValue = this.url.substr(this.url.lastIndexOf('/') + 1);
   }
@@ -88,6 +96,18 @@ export class AddNewPromotionComponent implements OnInit, OnDestroy {
       }
       formData.append('title',this.promotion.title);
       formData.append('description',this.promotion.description);
+      if(this.promotion.type === 'link'){
+        formData.append('videoLink',this.promotion.videoLink);
+        formData.append('type','link');
+      }else{
+        formData.append('type','image');
+      }
+      if(this.promotion.promotionType === 'category'){
+        formData.append('categoryId',this.promotion.categoryId);
+      }
+      if(this.promotion.promotionType === 'product'){
+        formData.append('productId',this.promotion.productId);
+      }
       this.promotionService.addNewPromotion(formData).subscribe({
         next: (res)=>{
           console.log(res);
@@ -104,6 +124,8 @@ export class AddNewPromotionComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    this.getAllCategories();
+    this.getAllSellerProduct();
   }
 
   /**
@@ -113,5 +135,26 @@ export class AddNewPromotionComponent implements OnInit, OnDestroy {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+  }
+
+  public getAllCategories(){
+    this.adminService.getAllCategories().subscribe({
+      next: (res)=>{
+          this.allCategories = res;
+      }
+    })
+  }
+
+  public getAllSellerProduct(){
+    this.productService.getAllSellerProducts('').subscribe({
+      next: (value)=> {
+          this.products = value[0].results;
+          this.products.map(elem => {
+            if(!value.product.imageUrl){
+              value.product['imageUrl'] = '';
+            }
+          })
+      },
+  })
   }
 }
